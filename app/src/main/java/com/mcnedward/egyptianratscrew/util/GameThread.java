@@ -3,6 +3,7 @@ package com.mcnedward.egyptianratscrew.util;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
@@ -23,24 +24,24 @@ public class GameThread extends Thread {
     private GameSurface mGameSurface;
     private SurfaceHolder mSurfaceHolder;
 
-    private GameTable gameTable;
     private Controller controller;
     private Renderer renderer;
 
     private boolean running = false;
 
-    public GameThread(GameSurface gameSurface, Context context) {
+    public GameThread(GameSurface gameSurface, Context context, GameTable gameTable) {
         super();
         mGameSurface = gameSurface;
         mSurfaceHolder = gameSurface.getHolder();
 
-        gameTable = new GameTable(context);
         controller = new Controller(context, gameTable);
         renderer = new Renderer(context, gameTable);
 
+        final GestureDetector gestureDetector = new GestureDetector(context, new GestureListener(gameTable));
         gameSurface.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                gestureDetector.onTouchEvent(event);
                 return controller.handleTouch(v, event);
             }
         });

@@ -1,22 +1,27 @@
 package com.mcnedward.egyptianratscrew;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 
+import com.mcnedward.egyptianratscrew.model.GameTable;
 import com.mcnedward.egyptianratscrew.view.GameSurface;
 
 public class MainActivity extends AppCompatActivity {
+
+    private GameTable mGameTable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mGameTable = new GameTable(this);
+
         LinearLayout layout = (LinearLayout) findViewById(R.id.mainLayout);
-        layout.addView(new GameSurface(this));
+        layout.addView(new GameSurface(this, mGameTable));
 
     }
 
@@ -37,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }
+        if (id == R.id.action_reset) {
+            mGameTable.reset();
         }
 
         return super.onOptionsItemSelected(item);

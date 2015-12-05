@@ -27,10 +27,11 @@ public class GameTable {
     private Player mPlayer2;
 
     private Random mRandom;
-    private boolean mCardsDealt = false;
-
     private int cardIndex;
     private static int rotationDegrees;
+    private boolean mCardsDealt = false;
+    private boolean mFlungDown;
+    private boolean mFlungUp;
 
     public GameTable(Context context) {
         mDeck = new ArrayList<>();
@@ -65,6 +66,34 @@ public class GameTable {
             switchTurns();
     }
 
+    public void addCardsToPlayer1() {
+        addCardsToPlayer(mPlayer1);
+    }
+
+    public void addCardsToPlayer2() {
+        addCardsToPlayer(mPlayer2);
+    }
+
+    /**
+     * Add the cards in the middle pile to a player.
+     *
+     * @param player The player to add the middle pile to.
+     */
+    private void addCardsToPlayer(Player player) {
+        player.addCards(mCards);
+        mCards = new ArrayList<>();
+        // Reset the rotation degree
+        rotationDegrees = 0;
+    }
+
+    public void reset() {
+        mPlayer1 = new Player("Player 1");
+        mPlayer2 = new Player("Player 2");
+        mCards = new ArrayList<>();
+        mCardsDealt = false;
+        rotationDegrees = 0;
+    }
+
     private void switchTurns() {
         mPlayer1.setTurn(!mPlayer1.isTurn());
         mPlayer2.setTurn(!mPlayer2.isTurn());
@@ -87,9 +116,9 @@ public class GameTable {
         for (Field f : drawables) {
             try {
                 if (f.getName().equals("b2fv")) {
-                    mFaceCard= new Card(context, f.getName(), f.getInt(drawableResources));
-                    mPlayerCard= new Card(context, f.getName(), f.getInt(drawableResources));
-                    mOtherCard= new Card(context, f.getName(), f.getInt(drawableResources));
+                    mFaceCard = new Card(context, f.getName(), f.getInt(drawableResources));
+                    mPlayerCard = new Card(context, f.getName(), f.getInt(drawableResources));
+                    mOtherCard = new Card(context, f.getName(), f.getInt(drawableResources));
                 }
                 if (f.getName().length() <= 3) {
                     mDeck.add(new Card(context, f.getName(), f.getInt(drawableResources)));
@@ -146,5 +175,21 @@ public class GameTable {
 
     public void setCardsDealt(boolean cardsDealt) {
         this.mCardsDealt = cardsDealt;
+    }
+
+    public boolean isFlungUp() {
+        return mFlungUp;
+    }
+
+    public void setFlungUp(boolean flungUp) {
+        this.mFlungUp = flungUp;
+    }
+
+    public boolean isFlungDown() {
+        return mFlungDown;
+    }
+
+    public void setFlungDown(boolean flungDown) {
+        this.mFlungDown = flungDown;
     }
 }

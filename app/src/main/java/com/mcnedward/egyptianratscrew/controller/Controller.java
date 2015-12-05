@@ -30,10 +30,20 @@ public class Controller {
         if (touched) {
             if (mGameTable.isCardsDealt()) {
                 // If game is started
-                if (mGameTable.isPlayer1Turn() && mGameTable.getPlayerCard().isTouched(touchPosition.x, touchPosition.y))
+
+                if (mGameTable.isFlungDown()) {
+                    mGameTable.addCardsToPlayer1();
+                    mGameTable.setFlungDown(false);
+                }
+                if (mGameTable.isFlungUp()) {
+                    mGameTable.addCardsToPlayer2();
+                    mGameTable.setFlungUp(false);
+                }
+
+                if (mGameTable.isPlayer1Turn() && mGameTable.getPlayerCard().isTouched(touchPosition.x, touchPosition.y)
+                        || mGameTable.isPlayer2Turn() && mGameTable.getOtherCard().isTouched(touchPosition.x, touchPosition.y)) {
                     mGameTable.dealCard();
-                if (mGameTable.isPlayer2Turn() && mGameTable.getOtherCard().isTouched(touchPosition.x, touchPosition.y))
-                    mGameTable.dealCard();
+                }
             } else {
                 // If game is not started yet, deal cards when player taps middle card
                 if (mGameTable.getFaceCard().isTouched(touchPosition.x, touchPosition.y)) {

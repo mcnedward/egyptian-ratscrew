@@ -89,5 +89,4 @@ public class Card {
     public Rect getBounds() {
         return mBounds;
     }
-
 }

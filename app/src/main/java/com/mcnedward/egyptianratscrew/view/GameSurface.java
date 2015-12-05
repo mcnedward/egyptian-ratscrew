@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.mcnedward.egyptianratscrew.model.GameTable;
 import com.mcnedward.egyptianratscrew.util.GameThread;
 
 /**
@@ -17,11 +18,13 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     public static int HEIGHT;
 
     private Context mContext;
+    private GameTable mGameTable;
     private GameThread mGameThread;
 
-    public GameSurface(Context context) {
+    public GameSurface(Context context, GameTable gameTable) {
         super(context);
         mContext = context;
+        mGameTable = gameTable;
 
         getHolder().addCallback(this);
 
@@ -32,7 +35,7 @@ public class GameSurface extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         if (mGameThread == null) {
-            mGameThread = new GameThread(this, mContext);
+            mGameThread = new GameThread(this, mContext, mGameTable);
             mGameThread.startGame();
         }
     }
